@@ -1,5 +1,5 @@
-#QRFire
-##Your own QR link engine. Instant, trackable, and powered by Firebase.
+# QRFire
+## Your own QR link engine. Instant, trackable, and powered by Firebase.
 
 ## Getting Started
 
