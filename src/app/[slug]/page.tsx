@@ -1,29 +1,44 @@
-import { adminDb } from "@/lib/firebase/admin";
-import { notFound, redirect } from "next/navigation";
+"use client";
 
-export default async function SlugPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
+import { useEffect } from "react";
+import { useParams, notFound, redirect } from "next/navigation";
+import { db } from "@/lib/firebase/browser";
+import { collection, query, where, getDocs, limit } from "firebase/firestore";
 
-  const qrCodeQuery = await adminDb
-    .collection("qr_codes")
-    .where("slug", "==", slug)
-    .limit(1)
-    .get();
+export default function SlugPage() {
+  const params = useParams();
+  const { slug } = params;
 
-  if (qrCodeQuery.empty) {
-    notFound();
-  }
+  useEffect(() => {
+    const fetchUrlAndRedirect = async () => {
+      if (typeof slug !== "string") {
+        return;
+      }
 
-  const qrCodeDoc = qrCodeQuery.docs[0];
-  const { url } = qrCodeDoc.data();
+      const qrCodeQuery = query(
+        collection(db, "qr_codes"),
+        where("slug", "==", slug),
+        limit(1)
+      );
 
-  if (url) {
-    redirect(url);
-  } else {
-    notFound();
-  }
+      const qrCodeQuerySnapshot = await getDocs(qrCodeQuery);
+
+      if (qrCodeQuerySnapshot.empty) {
+        notFound();
+      } else {
+        const qrCodeDoc = qrCodeQuerySnapshot.docs[0];
+        const { url } = qrCodeDoc.data();
+
+        if (url) {
+          redirect(url);
+        } else {
+          notFound();
+        }
+      }
+    };
+
+    fetchUrlAndRedirect();
+  }, [slug]);
+
+  return null;
 } 
