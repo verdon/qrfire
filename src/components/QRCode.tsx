@@ -28,56 +28,28 @@ const QRCode = forwardRef<QRCodeRef, QRCodeProps>(({ value, size, fgColor, bgCol
   }));
 
   useEffect(() => {
-    if (localRef.current) {
-      qrCodeRef.current = new QRCodeStyling({
-        width: size,
-        height: size,
-        data: value,
-        image: '',
-        dotsOptions: {
-          color: fgColor,
-          type: dotStyle,
-        },
-        backgroundOptions: {
-          color: bgColor,
-        },
-        cornersSquareOptions: {
-            color: fgColor,
-            type: cornerStyle,
-        },
-        cornersDotOptions: {
-            color: fgColor,
-            type: cornerDotStyle,
-        }
-      });
+    const options = {
+      width: size,
+      height: size,
+      data: value,
+      image: '',
+      dotsOptions: { color: fgColor, type: dotStyle },
+      backgroundOptions: { color: bgColor },
+      cornersSquareOptions: { color: fgColor, type: cornerStyle },
+      cornersDotOptions: { color: fgColor, type: cornerDotStyle },
+    };
+
+    if (!localRef.current) return;
+
+    if (qrCodeRef.current) {
+      qrCodeRef.current.update(options);
+    } else {
+      qrCodeRef.current = new QRCodeStyling(options);
       // Clear previous QR code before appending a new one
       localRef.current.innerHTML = '';
       qrCodeRef.current.append(localRef.current);
     }
-  }, [size, value]);
-
-  useEffect(() => {
-    if (qrCodeRef.current) {
-      qrCodeRef.current.update({
-        data: value,
-        dotsOptions: {
-          color: fgColor,
-          type: dotStyle,
-        },
-        backgroundOptions: {
-          color: bgColor,
-        },
-        cornersSquareOptions: {
-            color: fgColor,
-            type: cornerStyle,
-        },
-        cornersDotOptions: {
-            color: fgColor,
-            type: cornerDotStyle,
-        }
-      });
-    }
-  }, [value, fgColor, bgColor, dotStyle, cornerStyle, cornerDotStyle]);
+  }, [value, size, fgColor, bgColor, dotStyle, cornerStyle, cornerDotStyle]);
 
   return <div ref={localRef} />;
 });

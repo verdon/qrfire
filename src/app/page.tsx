@@ -31,7 +31,7 @@ export default function Home() {
   
   const qrCodeRef = useRef<QRCodeRef>(null);
 
-  const finalUrl = `https://qr.yuze.uk/${slug}`;
+  const finalUrl = `https://qr.yuze.social/${slug}`;
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -82,7 +82,7 @@ export default function Home() {
                 newErrors.url = "Please enter a valid URL.";
                 isValid = false;
             }
-        } catch (_) {
+        } catch {
             newErrors.url = "Please enter a valid URL.";
             isValid = false;
         }
@@ -118,7 +118,7 @@ export default function Home() {
         cornerDotStyle: cornerDotStyle,
       });
       
-      toast.success("Slay! It's Live.", {
+      toast.success("Slay! It&apos;s Live.", {
         description: `Your link ${finalUrl} is ready to go.`,
         action: {
           label: "Copy Link",
@@ -131,7 +131,7 @@ export default function Home() {
 
       setSlug("");
       setUrl("");
-    } catch (e: any) {
+    } catch (e) {
       setServerError("Error creating QR code. The slug might already exist.");
       console.error("Error adding document: ", e);
     } finally {
@@ -144,7 +144,7 @@ export default function Home() {
       <header className="py-8">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl font-bold tracking-tight">QR Fire</h1>
-          <p className="text-muted-foreground mt-2">QR codes that don't suck.</p>
+          <p className="text-muted-foreground mt-2">QR code hosting that don&apos;t cost.</p>
         </div>
       </header>
       <main className="container mx-auto flex flex-col items-center justify-center px-4">
@@ -201,9 +201,9 @@ export default function Home() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="slug">Custom Vibe Name (Slug)</Label>
-                <Input id="slug" placeholder="e.g., wow-doge for https://qr.yuze.uk/wow-doge" value={slug} onChange={handleSlugChange} />
+                <Input id="slug" placeholder="e.g., wow-doge for https://qr.yuze.social/wow-doge" value={slug} onChange={handleSlugChange} />
                 {validationErrors.slug && <p className="text-sm text-destructive pt-1">{validationErrors.slug}</p>}
-                {!validationErrors.slug && slug && <p className="text-sm text-muted-foreground pt-1">It's giving: <span className="font-medium text-primary">{finalUrl}</span></p>}
+                {!validationErrors.slug && slug && <p className="text-sm text-muted-foreground pt-1">It&apos;s giving: <span className="font-medium text-primary">{finalUrl}</span></p>}
               </div>
 
               <div className="space-y-4">

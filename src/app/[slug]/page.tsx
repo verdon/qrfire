@@ -1,14 +1,12 @@
 import { adminDb } from "@/lib/firebase/admin";
 import { notFound, redirect } from "next/navigation";
 
-interface SlugPageProps {
-  params: {
-    slug: string;
-  };
-}
-
-export default async function SlugPage({ params }: SlugPageProps) {
-  const { slug } = params;
+export default async function SlugPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
 
   const qrCodeQuery = await adminDb
     .collection("qr_codes")
